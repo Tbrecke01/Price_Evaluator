@@ -3,8 +3,8 @@
 
 # Technology usage for our final project
 
-1-	Which tools are the best fit for your project?
-2-	What will be used for each section? 
+1-	Which tools are the best fit for your project?<br>
+2-	What will be used for each section? <br>
 3-	How will the dashboard be built?
 
 
