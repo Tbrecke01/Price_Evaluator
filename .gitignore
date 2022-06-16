@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 
 DatafinitiElectronicsProductsPricingData.csv
+cleaned.csv
 data_to_delete.csv
