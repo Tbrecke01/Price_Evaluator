@@ -9,3 +9,10 @@ There’s always a lot of ‘head knowledge’ of the best times to buy a certai
 - What retailer should I buy item X from?
 - Is one retailer generally better than the others?
 - Are the best deals always on holidays?
+
+## Communication Methods
+- We will meet every Tuesday/Thursday starting at 6:00 to review changes and to go over large problems.
+- Team members will update each other daily on Slack
+- If assistance is needed, impropmtu meetings will be scheduled using Slack. If not all members can be present in these meetings that is acceptable.
+- All team members have each others email and phone number for contact purposes as well in case of issues
+- Individual member updates will be stored in their corresponding Git branch (named for each member). Review by two memebers is needed to push an update to main.
