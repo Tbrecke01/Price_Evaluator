@@ -1,4 +1,4 @@
-# “When to Buy” App
+# The “When to Buy” App
 ## Description 
 Train a Machine Learning Model to be able to recognize whether a product’s pricing is discounted based on the date, merchant info and product id.
 ## Reason Selected
