@@ -12,11 +12,11 @@
 
 •	Pandas, Numpy, Mathplotlib will be used to clean the data and perform analysis.
 
-•	Postgres/ Mysql is the database we will store the data.
+•	Postgres is the database we will store the data.
 
 •	Since we will have the data in csv format Sklearn is the ML library we will be using to create classifiers and will be used to train and test the data.
 
-•	Jupyter Notebook / Google Colab will be used as our code editors.
+•	Jupyter Notebook / Google Colab / VScode will be used as our code editors.
 
 •	Dashboard will be created using JavaScript, HTML, CSS , Bootstrap. 
 and Flask will be used to display the data, D3.js will be used for fully functioning and interactive dashboard.
