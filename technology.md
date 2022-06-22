@@ -19,7 +19,7 @@
 •	Jupyter Notebook / Google Colab / VScode will be used as our code editors.
 
 •	Dashboard will be created using Streamlit, HTML, CSS , Bootstrap. 
-and Flask will be used to display the data, D3.js will be used for fully functioning and interactive dashboard.
+and Streamlit will be used to display the data, D3.js will be used for fully functioning and interactive dashboard.
 
 •	Storytelling and extra visualization will be created using Tableau.
 
