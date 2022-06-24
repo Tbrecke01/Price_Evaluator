@@ -16,3 +16,11 @@ There’s always a lot of ‘head knowledge’ of the best times to buy a certai
 - If assistance is needed, impropmtu meetings will be scheduled using Slack. If not all members can be present in these meetings that is acceptable.
 - All team members have each others email and phone number for contact purposes as well in case of issues
 - Individual member updates will be stored in their corresponding Git branch (named for each member). Review by two memebers is needed to push an update to main.
+
+## Machine Learning Model
+For the machine learning model, we chose the RandomForestClassifier to help predict whether prices seen online are "discounted / sale" prices or "standard / retail" prices. In order to train the model, we obtained [Electronic Products and Pricing Data](https://www.kaggle.com/datasets/datafiniti/electronic-products-prices?resource=download) from [kaggle.com](kaggle.com) which includes minimum selling prices (`prices_amountMin`) observed from various online merchants (`prices_merchant`) as well as the dates that those prices were observed (`prices_dateSeen`), and whether the prices observed were "sale" prices (`prices_isSale`) for each individual product id (`id`). 
+
+In order to use the `pricing_merchant` data, we needed to clean the data using RegEx strings to match different variations of merchant names. Afterwards, in order to reduce the number of unique merchants, we only kept Bestbuy, Walmart and Amazon, and placed all other merchants into an 'Others' bucket. 
+
+Additionally, we observed that our pricing data had a class imbalance with discounted prices being less common than standard prices (as expected) and therefore we utilized RandomOverSampling in our training population in order to achieve a more balanced training set.
+
