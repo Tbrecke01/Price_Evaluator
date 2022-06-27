@@ -25,7 +25,7 @@ def show_predict_page():
 
     st.title("Price Evaluator")
 
-    merchandise = ("Amazon", "Best Buy", "Walmart", "bhphotovideo","Others")
+    merchandise = ("Amazon.com", "Bestbuy.com", "Walmart.com", "bhphotovideo.com","Others")
 
     #item_id = st.text_input("enter your item ID")
     
@@ -47,20 +47,34 @@ def show_predict_page():
 
         connect = engine.connect()
 
-        query = "SELECT name, manufacturer, prices_merchant, prices_amountmin FROM price_data"
+        # query = "SELECT name, prices_amountMin, prices_merchant FROM price_data"
+        query = "SELECT * FROM price_data"
 
         df = pd.read_sql(query, con=connect)
 
-      
-        for n in df["name"]:
-            if n == item_name:
-                st.write(n)
-
+        # df = pd.read_csv("cleaned3.csv")
         
+        n, p, r = st.columns(3)
+        with n:     
+            for n in df["name"]:
+                if n == item_name:
+                    st.write(n)
 
-        # for p in df["prices_amountmin"]:
-        #     if p == item_price:
-        #         st.write(p)
+       
+        with p: 
+            for p in df["prices_amountMin"]:
+                if p == item_price:
+                    st.write(p)
+                    
+        with r: 
+            for r in df["prices_merchant"]:
+                if r == retailer:
+                    st.write(r)
+
+
+        st.success("Good Deal!")
+        st.warning("Not a Good Deal!")
+    
 
         # searched_data = pd.DataFrame(n,p)
         # st.write(searched_data)
