@@ -21,7 +21,7 @@ import plotly.graph_objects as go
 import sys
 from config import password
 
-def show_table_page():
+def show_predict_page():
 
     st.title("Price Evaluator")
 

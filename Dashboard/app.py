@@ -4,8 +4,8 @@ import joblib
 import json
 import requests
 import streamlit as st
-from main_page import show_table_page
-from graph_page import show_predict_page
+from main_page import show_predict_page
+from graph_page import show_table_page
 from streamlit_option_menu import option_menu
 from streamlit_lottie import st_lottie
 
@@ -37,6 +37,6 @@ selected = option_menu(menu_title = "Options",
 
 
 if selected == "predictions":
-    show_table_page()
-else:
     show_predict_page()
+else:
+    show_table_page()
