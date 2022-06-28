@@ -21,72 +21,63 @@ import psycopg2
 import plotly.graph_objects as go
 import sys
 from config import password
+import time
+from ML_Evaluator import evaluate_price
+
+# Connect to RDS Database to query price_data table and store as csv (locally)
+url = f"postgresql://postgres:{password}@final-project.crnuve3iih8x.us-east-1.rds.amazonaws.com:5432/postgres"
+engine = create_engine(url)
+connect = engine.connect()
+query = "SELECT id, name, prices_amountmax, prices_amountmin, prices_issale, prices_merchant, prices_condition FROM price_data"
+df = pd.read_sql(query, con=connect)
+df.to_csv('cleaned.csv')
 
 def show_predict_page():
 
     st.title("Price Evaluator")
 
-    merchandise = ("Amazon.com", "Bestbuy.com", "Walmart.com", "bhphotovideo.com","Others")
-
+    merchant = ("Amazon.com", "Bestbuy.com", "Walmart.com", "bhphotovideo.com","Others")
+    products_condition = ("New", "Used")
     #item_id = st.text_input("enter your item ID")
     
-    box1, box2, box3,= st.columns((3,3,3))   
+    box1, box2, box3, box4 = st.columns((3,2,2,2))   
     with box1:
         item_name = st.text_input("Enter Product Name")
     with box2:
         item_price = st.number_input("Enter your price")  
     with box3:
-        retailer = st.selectbox("Retailer", merchandise)
-
+        retailer = st.selectbox("Retailer", merchant)
+    with box4:
+        p_condition = st.selectbox("Product Condition", products_condition)
+    
+    product_id = 'AVpgMuGwLJeJML43KY_c'
 
     searchButton = st.button("Search")
-    if searchButton:
-            # Connect to RDS Database to query price_data table and store as a pandas DataFrame
-        url = f"postgresql://postgres:{password}@final-project.crnuve3iih8x.us-east-1.rds.amazonaws.com:5432/postgres"
 
-        engine = create_engine(url)
+    if searchButton:     
+        df = pd.read_csv('cleaned.csv')
 
-        connect = engine.connect()
+        with st.spinner("Searching for your product"):
+            time.sleep(1)
 
-        # query = "SELECT name, prices_amountMin, prices_merchant FROM price_data"
-        query = "SELECT * FROM price_data"
+        df.rename(columns = {"name": "Product Name", 
+            "prices_amountmin": "Price", 
+            "prices_merchant": "Merchant",
+            "prices_condition": "Product Condition"},
+            inplace = True)
 
-        df = pd.read_sql(query, con=connect)
+        st.balloons()
         st.write(df)
-        # df = pd.read_csv("cleaned3.csv")
+        # df = pd.read_csv("cleaned.csv")
         
-        # n, p, r = st.columns(3)
-        # with n:     
-        #     for n in df["name"]:
-        #         if n == item_name:
-        #             st.write(n)
-        #             break
-        #         elif n!= item_name:
-        #             st.write("product not found")
-        #             break
-
-       
-        # with p: 
-        #     for p in df["prices_amountMin"]:
-        #         if p == item_price:
-        #             st.write(p)
-        #             break
-        #         elif n!= item_price:
-        #             st.write("price not found")
-        #             break
-                    
-        # with r: 
-        #     for r in df["prices_merchant"]:
-        #         if r == retailer:
-        #             st.write(r)
-        #             break
-
+        user_df = df.loc[df["Product Name"] == item_name]
+        st.write(user_df)
         
-
-
-        st.success("Good Deal!")
-
-        st.warning("Not a Good Deal!")
+    eval = evaluate_price(product_id, item_price, p_condition, retailer)
+    if eval == True:
+        st.success("Seems like Good Deal!")
+    if eval == False:
+        st.warning("May Not be the Best Deal!")
     
 
         # searched_data = pd.DataFrame(n,p)
@@ -95,15 +86,15 @@ def show_predict_page():
 
     st.title("Data Visualization")
         
-    df = pd.read_csv("cleaned3.csv")
+    df = pd.read_csv("cleaned.csv")
         
     g1, g2 = st.columns((5,5))
 
     with g1:
         st.write("### Bar Chart ")
         chart_data = pd.DataFrame(
-        df["prices_amountMax"],
-        df["prices_amountMin"])
+        df["prices_amountmax"],
+        df["prices_amountmin"])
         st.bar_chart(chart_data)
 
     with g2:
