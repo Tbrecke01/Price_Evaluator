@@ -9,7 +9,7 @@ import datapane as dp
 import eel
 
 def load_model():
-    df = pd.read_csv("cleaned3.csv")
+    df = pd.read_csv("cleaned.csv")
     return df
 
 df = load_model()

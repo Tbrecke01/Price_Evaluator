@@ -29,14 +29,14 @@ st_lottie(
 
 
 selected = option_menu(menu_title = "Options",
- options = ["predictions", "Visualizations"], 
+ options = ["Predictions", "Visualizations"], 
  menu_icon = "menu-button-fill",
  icons = ["activity", "bar-chart-fill"], 
  default_index = 0, 
  orientation = "horizontal")
 
 
-if selected == "predictions":
+if selected == "Predictions":
     show_predict_page()
 else:
     show_table_page()
