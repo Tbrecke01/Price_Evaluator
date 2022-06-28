@@ -7,7 +7,6 @@ from imblearn.over_sampling import RandomOverSampler
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
 from collections import Counter
 from soupsieve import escape
-from sqlalchemy import create_engine
 import joblib
 import streamlit as st
 import pickle 
@@ -24,38 +23,28 @@ from config import password
 import time
 from ML_Evaluator import evaluate_price
 
-# Connect to RDS Database to query price_data table and store as csv (locally)
-url = f"postgresql://postgres:{password}@final-project.crnuve3iih8x.us-east-1.rds.amazonaws.com:5432/postgres"
-engine = create_engine(url)
-connect = engine.connect()
-query = "SELECT id, name, prices_amountmax, prices_amountmin, prices_issale, prices_merchant, prices_condition FROM price_data"
-df = pd.read_sql(query, con=connect)
-df.to_csv('cleaned.csv')
-
-def show_predict_page():
+def show_predict_page(df):
 
     st.title("Price Evaluator")
-
-    merchant = ("Amazon.com", "Bestbuy.com", "Walmart.com", "bhphotovideo.com","Others")
-    products_condition = ("New", "Used")
+    product_names = list(df['name'].unique())
+    merchants = ("Amazon.com", "Bestbuy.com", "Walmart.com", "bhphotovideo.com","Others")
+    product_conditions = ("New", "Used")
     #item_id = st.text_input("enter your item ID")
     
     box1, box2, box3, box4 = st.columns((3,2,2,2))   
     with box1:
-        item_name = st.text_input("Enter Product Name")
+        item_name = st.selectbox("Enter Product Name", product_names)
     with box2:
         item_price = st.number_input("Enter your price")  
     with box3:
-        retailer = st.selectbox("Retailer", merchant)
+        retailer = st.selectbox("Retailer", merchants)
     with box4:
-        p_condition = st.selectbox("Product Condition", products_condition)
+        p_condition = st.selectbox("Product Condition", product_conditions)
     
-    product_id = 'AVpgMuGwLJeJML43KY_c'
 
     searchButton = st.button("Search")
 
     if searchButton:     
-        df = pd.read_csv('cleaned.csv')
 
         with st.spinner("Searching for your product"):
             time.sleep(1)
@@ -67,17 +56,19 @@ def show_predict_page():
             inplace = True)
 
         st.balloons()
-        st.write(df)
+        # st.write(df[['Product Name', 'Price', 'Merchant', 'Product Condition']])
         # df = pd.read_csv("cleaned.csv")
         
         user_df = df.loc[df["Product Name"] == item_name]
-        st.write(user_df)
+        st.write(user_df[['Product Name', 'Price', 'Merchant', 'Product Condition']])
         
-    eval = evaluate_price(product_id, item_price, p_condition, retailer)
-    if eval == True:
-        st.success("Seems like Good Deal!")
-    if eval == False:
-        st.warning("May Not be the Best Deal!")
+        # Filter df for item_name in order to find product_id
+        product_id = df['id'].loc[df['Product Name'] == item_name].iloc[0]    
+        eval = evaluate_price(product_id, item_price, p_condition, retailer)
+        if eval == True:
+            st.success("Seems like Good Deal!")
+        if eval == False:
+            st.warning("May Not be the Best Deal!")
     
 
         # searched_data = pd.DataFrame(n,p)
@@ -86,7 +77,6 @@ def show_predict_page():
 
     st.title("Data Visualization")
         
-    df = pd.read_csv("cleaned.csv")
         
     g1, g2 = st.columns((5,5))
 

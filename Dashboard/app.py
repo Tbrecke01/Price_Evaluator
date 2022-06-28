@@ -8,8 +8,18 @@ from main_page import show_predict_page
 from graph_page import show_table_page
 from streamlit_option_menu import option_menu
 from streamlit_lottie import st_lottie
+from config import password
+from sqlalchemy import create_engine
 
 st.set_page_config(layout ="wide")
+
+# Connect to RDS Database to query price_data table and store as pandas dataframe
+url = f"postgresql://postgres:{password}@final-project.crnuve3iih8x.us-east-1.rds.amazonaws.com:5432/postgres"
+engine = create_engine(url)
+connect = engine.connect()
+query = "SELECT id, name, prices_amountmax, prices_amountmin, prices_issale, prices_merchant, prices_condition FROM price_data"
+df = pd.read_sql(query, con=connect)
+# df.to_csv('cleaned.csv')
 
 def load_lottieurl(url: str):
     r = requests.get(url)
@@ -37,6 +47,6 @@ selected = option_menu(menu_title = "Options",
 
 
 if selected == "Predictions":
-    show_predict_page()
+    show_predict_page(df)
 else:
     show_table_page()
