@@ -131,5 +131,9 @@ dmypy.json
 DatafinitiElectronicsProductsPricingData.csv
 cleaned.csv
 data_to_delete.csv
+<<<<<<< HEAD
 .DS_Store
 config.py
+=======
+.DS_Store
+>>>>>>> a2957ee8ba17bbace7af6de1a8846f119b0026fe
