@@ -132,3 +132,4 @@ DatafinitiElectronicsProductsPricingData.csv
 cleaned.csv
 data_to_delete.csv
 .DS_Store
+config.py

@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from imblearn.over_sampling import RandomOverSampler
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
 from collections import Counter
+from soupsieve import escape
 from sqlalchemy import create_engine
 import joblib
 import streamlit as st
@@ -29,7 +30,7 @@ def show_predict_page():
 
     #item_id = st.text_input("enter your item ID")
     
-    box1, box2, box3= st.columns((3,3,3))   
+    box1, box2, box3,= st.columns((3,3,3))   
     with box1:
         item_name = st.text_input("Enter Product Name")
     with box2:
@@ -51,28 +52,40 @@ def show_predict_page():
         query = "SELECT * FROM price_data"
 
         df = pd.read_sql(query, con=connect)
-
+        st.write(df)
         # df = pd.read_csv("cleaned3.csv")
         
-        n, p, r = st.columns(3)
-        with n:     
-            for n in df["name"]:
-                if n == item_name:
-                    st.write(n)
+        # n, p, r = st.columns(3)
+        # with n:     
+        #     for n in df["name"]:
+        #         if n == item_name:
+        #             st.write(n)
+        #             break
+        #         elif n!= item_name:
+        #             st.write("product not found")
+        #             break
 
        
-        with p: 
-            for p in df["prices_amountMin"]:
-                if p == item_price:
-                    st.write(p)
+        # with p: 
+        #     for p in df["prices_amountMin"]:
+        #         if p == item_price:
+        #             st.write(p)
+        #             break
+        #         elif n!= item_price:
+        #             st.write("price not found")
+        #             break
                     
-        with r: 
-            for r in df["prices_merchant"]:
-                if r == retailer:
-                    st.write(r)
+        # with r: 
+        #     for r in df["prices_merchant"]:
+        #         if r == retailer:
+        #             st.write(r)
+        #             break
+
+        
 
 
         st.success("Good Deal!")
+
         st.warning("Not a Good Deal!")
     
 
