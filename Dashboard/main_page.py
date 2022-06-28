@@ -84,7 +84,7 @@ def show_predict_page(df):
         st.write("### Bar Chart ")
         chart_data = pd.DataFrame(
         df["prices_amountmax"],
-        df["prices_amountmin"])
+        df["Price"])
         st.bar_chart(chart_data)
 
     with g2:
