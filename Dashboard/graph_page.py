@@ -25,8 +25,8 @@ def show_table_page():
     with g1:
         st.write("### Bar Chart ")
         chart_data = pd.DataFrame(
-        df["prices_amountMax"],
-        df["prices_amountMin"])
+        df["prices_amountmax"],
+        df["prices_amountmin"])
         st.bar_chart(chart_data)
 
     with g2:
@@ -36,7 +36,7 @@ def show_table_page():
         columns=['a', 'b', 'c'])
         st.line_chart(chart_data)
 
-    eel.start("index.html")
+    eel.start("Dashboard/static/index.html")
 
     # st.markdown(f"""<a href = "http://127.0.0.1:5500/static/index.html"> click here </a>""")
     # st.write("http://127.0.0.1:5500/static/index.html")

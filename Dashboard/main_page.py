@@ -41,6 +41,11 @@ def show_predict_page(df):
     with box4:
         p_condition = st.selectbox("Product Condition", product_conditions)
     
+    df.rename(columns = {"name": "Product Name", 
+            "prices_amountmin": "Price", 
+            "prices_merchant": "Merchant",
+            "prices_condition": "Product Condition"},
+            inplace = True)
 
     searchButton = st.button("Search")
 
@@ -49,18 +54,12 @@ def show_predict_page(df):
         with st.spinner("Searching for your product"):
             time.sleep(1)
 
-        df.rename(columns = {"name": "Product Name", 
-            "prices_amountmin": "Price", 
-            "prices_merchant": "Merchant",
-            "prices_condition": "Product Condition"},
-            inplace = True)
-
         st.balloons()
         # st.write(df[['Product Name', 'Price', 'Merchant', 'Product Condition']])
         # df = pd.read_csv("cleaned.csv")
         
         user_df = df.loc[df["Product Name"] == item_name]
-        st.write(user_df[['Product Name', 'Price', 'Merchant', 'Product Condition']])
+        st.write(user_df[['Product Name', 'Price', 'Merchant', 'Product Condition', '']])
         
         # Filter df for item_name in order to find product_id
         product_id = df['id'].loc[df['Product Name'] == item_name].iloc[0]    
@@ -68,7 +67,7 @@ def show_predict_page(df):
         if eval == True:
             st.success("Seems like Good Deal!")
         if eval == False:
-            st.warning("May Not be the Best Deal!")
+            st.warning("May Not be Discounted.")
     
 
         # searched_data = pd.DataFrame(n,p)
@@ -82,9 +81,7 @@ def show_predict_page(df):
 
     with g1:
         st.write("### Bar Chart ")
-        chart_data = pd.DataFrame(
-        df["prices_amountmax"],
-        df["prices_amountmin"])
+        chart_data = pd.DataFrame(df["Price"])
         st.bar_chart(chart_data)
 
     with g2:
