@@ -14,8 +14,8 @@ def show_predict_page(df):
 
     # Dropdown menu options
     product_names = list(df['Product Name'].unique())
-    merchants = ("Amazon.com", "Bestbuy.com", "Walmart.com", "bhphotovideo.com","Others")
-    product_conditions = ("New", "Used")
+    merchants = list(df['Merchant'].unique())
+    product_conditions = list(df['Product Condition'].unique())
 
     # Generate input form
     with st.form('user_form'):

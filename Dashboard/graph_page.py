@@ -4,7 +4,7 @@ import pandas as pd
 import eel
 
 # Show Tableau Dashboard
-def show_table_page(df):
+def show_table_page():
     st.title("Data Visualization") 
     eel.init("Dashboard/static")
     eel.start("index.html")

@@ -56,4 +56,4 @@ selected = option_menu(menu_title = "Options",
 if selected == "Predictions":
     show_predict_page(df), charts(df)
 else:
-    show_table_page(df)
+    show_table_page()
