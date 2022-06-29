@@ -7,6 +7,7 @@ import psycopg2
 from config import password
 import time
 from ML_Evaluator import evaluate_price
+import altair as alt
 
 # Function to generate predictions page
 def show_predict_page(df):
@@ -14,8 +15,8 @@ def show_predict_page(df):
 
     # Dropdown menu options
     product_names = list(df['Product Name'].unique())
-    merchants = ("Amazon.com", "Bestbuy.com", "Walmart.com", "bhphotovideo.com","Others")
-    product_conditions = ("New", "Used")
+    merchants = list(df['Merchant'].unique())
+    product_conditions = list(df['Product Condition'].unique())
 
     # Generate input form
     with st.form('user_form'):
@@ -55,26 +56,28 @@ def show_predict_page(df):
         # Print output df showing all product details matching selected product name
         output_df = df.loc[df["Product Name"] == item_name]
         st.write(output_df[['Product Name', 'Price', 'Merchant', 'Product Condition', 'On Sale']])
-        
-
-# Add high level visualizations to the page
-def charts(df):       
-        
+    
+    # Generate columns of equal width for interactive visualizations
     g1, g2 = st.columns((5,5))
 
+    # Graph 1 - Price History
     with g1:
+        output_df = df.loc[df["Product Name"] == item_name]
+        chart_data = pd.DataFrame({'Date': output_df['prices_dateseen'], 
+                                    'Price': output_df['Price'],
+                                    'Condition': output_df['Product Condition']})
+        st.write("### Price History")
+        st.altair_chart(alt.Chart(chart_data).mark_line().encode(x='Date',
+                                                        y='Price',
+                                                        color='Condition'))
+
+    # Graph 2 - Bar Chart
+    with g2:
         st.write("### Bar Chart ")
         chart_data = pd.DataFrame(
         df["prices_amountmax"],
         df["Price"])
         st.bar_chart(chart_data)
-
-    with g2:
-        st.write("### linear Chart ")
-        chart_data = pd.DataFrame(
-        np.random.randn(20, 3),
-        columns=['a', 'b', 'c'])
-        st.line_chart(chart_data)
 
 
 

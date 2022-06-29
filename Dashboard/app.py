@@ -3,7 +3,7 @@ import pandas as pd
 import json
 import requests
 import streamlit as st
-from main_page import show_predict_page, charts
+from main_page import show_predict_page
 from graph_page import show_table_page
 from streamlit_option_menu import option_menu
 from streamlit_lottie import st_lottie
@@ -16,7 +16,7 @@ st.set_page_config(layout ="wide")
 url = f"postgresql://postgres:{password}@final-project.crnuve3iih8x.us-east-1.rds.amazonaws.com:5432/postgres"
 engine = create_engine(url)
 connect = engine.connect()
-query = "SELECT id, name, prices_amountmax, prices_amountmin, prices_issale, prices_merchant, prices_condition FROM price_data"
+query = "SELECT * FROM price_data"
 df = pd.read_sql(query, con=connect)
 # df.to_csv('cleaned.csv')
 
@@ -54,6 +54,6 @@ selected = option_menu(menu_title = "Options",
 
 # Show selected tab from option menu
 if selected == "Predictions":
-    show_predict_page(df), charts(df)
+    show_predict_page(df)
 else:
     show_table_page(df)
