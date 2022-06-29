@@ -1,11 +1,10 @@
-# dependencies
+# Dependencies
 import pandas as pd
 import json
 import requests
 import streamlit as st
-from main_page import show_predict_page
+from main_page import show_predict_page, charts
 from graph_page import show_table_page
-from main_page import charts
 from streamlit_option_menu import option_menu
 from streamlit_lottie import st_lottie
 from config import password
@@ -21,7 +20,7 @@ query = "SELECT id, name, prices_amountmax, prices_amountmin, prices_issale, pri
 df = pd.read_sql(query, con=connect)
 # df.to_csv('cleaned.csv')
 
-#renaming 5 columns in dataset
+#Renaming the columns that we want to present on the website
 df.rename(columns = {"name": "Product Name", 
             "prices_amountmin": "Price", 
             "prices_merchant": "Merchant",
@@ -29,13 +28,12 @@ df.rename(columns = {"name": "Product Name",
             "prices_issale": "On Sale"},
             inplace = True)
 
-#addting animation
+# Adding animated graphic
 def load_lottieurl(url: str):
     r = requests.get(url)
     if r.status_code != 200:
         return None
     return r.json()
-
 lottie_hello = load_lottieurl("https://assets6.lottiefiles.com/packages/lf20_w5hernhv.json")
 st_lottie(
     lottie_hello, 
@@ -46,7 +44,7 @@ st_lottie(
     width = 200
 )
 
-#option menu (Prediction and visualization)
+# Option menu (Predictions and Visualizations tabs)
 selected = option_menu(menu_title = "Options",
  options = ["Predictions", "Visualizations"], 
  menu_icon = "menu-button-fill",
@@ -54,8 +52,8 @@ selected = option_menu(menu_title = "Options",
  default_index = 0, 
  orientation = "horizontal")
 
-
+# Show selected tab from option menu
 if selected == "Predictions":
     show_predict_page(df), charts(df)
 else:
-    show_table_page()
+    show_table_page(df)

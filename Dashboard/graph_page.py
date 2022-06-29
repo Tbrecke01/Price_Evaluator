@@ -3,10 +3,8 @@ import numpy as np
 import pandas as pd
 import eel
 
-
-def show_table_page():
-    
+# Show Tableau Dashboard
+def show_table_page(df):
     st.title("Data Visualization") 
-
     eel.init("Dashboard/static")
     eel.start("index.html")
