@@ -1,10 +1,8 @@
 import streamlit as st
-import numpy as np
-import pandas as pd
-import eel
+import streamlit.components.v1 as components
 
 # Show Tableau Dashboard
 def show_table_page():
     st.title("Data Visualization") 
-    eel.init("Dashboard/static")
-    eel.start("index.html")
+    HtmlFile=open('Dashboard/static/tableau_dashboard.html')
+    components.html(HtmlFile.read(), height=1000)

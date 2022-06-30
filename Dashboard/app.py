@@ -1,18 +1,17 @@
 # Dependencies
 import pandas as pd
-import json
 import requests
 import streamlit as st
+from sqlalchemy import create_engine
 from main_page import show_prediction_page, show_predicted_page
 from graph_page import show_table_page
 from streamlit_option_menu import option_menu
 from streamlit_lottie import st_lottie
-from config import password
-from sqlalchemy import create_engine
 
 st.set_page_config(layout ="wide")
 
 # Connect to RDS Database to query price_data table and store as pandas dataframe
+from config import password
 # password = st.secrets['db_pw']
 url = f"postgresql://postgres:{password}@final-project.crnuve3iih8x.us-east-1.rds.amazonaws.com:5432/postgres"
 engine = create_engine(url)
@@ -39,7 +38,7 @@ st_lottie(
 
 # Option menu (Predictions and Visualizations tabs)
 selected = option_menu(menu_title = "Options",
- options = ["Predictions", "Visualizations"], 
+ options = ["Predictions", "Tableau Dashboard"], 
  menu_icon = "menu-button-fill",
  icons = ["activity", "bar-chart-fill"], 
  default_index = 0, 
