@@ -18,15 +18,7 @@ engine = create_engine(url)
 connect = engine.connect()
 query = "SELECT * FROM price_data"
 df = pd.read_sql(query, con=connect)
-# df.to_csv('cleaned.csv')
-
-#Renaming the columns that we want to present on the website
-df.rename(columns = {"name": "Product Name", 
-            "prices_amountmin": "Price", 
-            "prices_merchant": "Merchant",
-            "prices_condition": "Product Condition",
-            "prices_issale": "On Sale"},
-            inplace = True)
+df.to_csv('cleaned.csv')
 
 # Adding animated graphic
 def load_lottieurl(url: str):

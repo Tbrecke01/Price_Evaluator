@@ -14,9 +14,9 @@ def show_predict_page(df):
     st.title("Price Evaluator")
 
     # Dropdown menu options
-    product_names = list(df['Product Name'].unique())
-    merchants = list(df['Merchant'].unique())
-    product_conditions = list(df['Product Condition'].unique())
+    product_names = list(df['name'].unique())
+    merchants = list(df['prices_merchant'].unique())
+    product_conditions = list(df['prices_condition'].unique())
 
     # Generate input form
     with st.form('user_form'):
@@ -29,7 +29,7 @@ def show_predict_page(df):
         with box2:
             item_price = st.number_input("Enter your price")
         with box3:
-            retailer = st.selectbox("Retailer", merchants)
+            retailer = st.selectbox("Select a Retailer", merchants)
         with box4:
             p_condition = st.selectbox("Product Condition", product_conditions)
 
@@ -43,7 +43,7 @@ def show_predict_page(df):
             time.sleep(1)
 
         # Filter df for item_name in order to find corresponding product_id
-        product_id = df['id'].loc[df['Product Name'] == item_name].iloc[0]
+        product_id = df['id'].loc[df['name'] == item_name].iloc[0]
         
         # Use ML_Evaluator to make a prediction based on user input
         eval = evaluate_price(product_id, item_price, p_condition, retailer)
@@ -54,29 +54,34 @@ def show_predict_page(df):
             st.warning("May Not be Discounted.")
 
         # Print output df showing all product details matching selected product name
-        output_df = df.loc[df["Product Name"] == item_name]
-        st.write(output_df[['Product Name', 'Price', 'Merchant', 'Product Condition', 'On Sale']])
+        output_df = df.loc[df["name"] == item_name]
+        display_df = pd.DataFrame({'Product Name': output_df['name'], 
+                                    'Price': output_df['prices_amountmin'], 
+                                    'Merchant': output_df['prices_merchant'], 
+                                    'Product Condition': output_df['prices_condition'],
+                                    'On Sale': output_df['prices_issale']})
+        st.write(display_df.style.format({"Price": "{:.2f}"}))
     
     # Generate columns of equal width for interactive visualizations
     g1, g2 = st.columns((5,5))
 
     # Graph 1 - Price History
     with g1:
-        output_df = df.loc[df["Product Name"] == item_name]
+        output_df = df.loc[df["name"] == item_name]
         chart_data = pd.DataFrame({'Date': output_df['prices_dateseen'], 
-                                    'Price': output_df['Price'],
-                                    'Condition': output_df['Product Condition']})
+                                    'Price': output_df['prices_amountmin'],
+                                    'Merchant': output_df['prices_merchant']})
         st.write("### Price History")
         st.altair_chart(alt.Chart(chart_data).mark_line().encode(x='Date',
                                                         y='Price',
-                                                        color='Condition'))
+                                                        color='Merchant'))
 
     # Graph 2 - Bar Chart
     with g2:
         st.write("### Bar Chart ")
         chart_data = pd.DataFrame(
         df["prices_amountmax"],
-        df["Price"])
+        df["prices_amountmin"])
         st.bar_chart(chart_data)
 
 
