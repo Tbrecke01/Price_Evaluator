@@ -14,16 +14,10 @@ def show_predict_page(df):
     st.title("Price Evaluator")
 
     # Dropdown menu options
-<<<<<<< HEAD
-    product_names = list(df['Product Name'].unique())
-    merchants = list(df['Merchant'].unique())
-    product_conditions = list(df['Product Condition'].unique())
-=======
     product_names = list(df['name'].unique())
     merchants = list(df['prices_merchant'].unique())
     product_conditions = list(df['prices_condition'].unique())
->>>>>>> 1286773897db677b4f59626007dc81ffcc81c1a2
-
+    
     # Generate input form
     with st.form('user_form'):
         # Splits the page width for four input columns
