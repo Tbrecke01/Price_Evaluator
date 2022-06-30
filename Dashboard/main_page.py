@@ -8,7 +8,7 @@ from ML_Evaluator import evaluate_price
 
 
 # Function to generate predictions page
-def show_predict_page(df):
+def show_prediction_page(df):
     st.title("Price Evaluator")
 
     # Dropdown menu options
@@ -29,22 +29,25 @@ def show_predict_page(df):
         with box3:
             retailer = st.selectbox("Select a Retailer", merchants)
         with box4:
-            p_condition = st.selectbox("Product Condition", product_conditions)
+            condition = st.selectbox("Product Condition", product_conditions)
 
         # Submit button for Input Form
         submitted = st.form_submit_button('Submit')
     
+    return item_name, item_price, retailer, condition, submitted
+
+def show_predicted_page(df, item_name, item_price, retailer, condition, submitted):
     # Runs Machine Learning Model each time input form is 'submitted' by user
     if submitted:     
-        # # Adds spinner after clicking the button
-        # with st.spinner("Searching for your product"):
-        #     time.sleep(1)
+        # Adds spinner after clicking the button
+        with st.spinner("Searching for your product"):
+            time.sleep(1)
 
         # Filter df for item_name in order to find corresponding product_id
         product_id = df['id'].loc[df['name'] == item_name].iloc[0]
         
         # Use ML_Evaluator to make a prediction based on user input
-        eval = evaluate_price(product_id, item_price, p_condition, retailer)
+        eval = evaluate_price(product_id, item_price, condition, retailer)
         if eval == True:
             st.success("Seems like a Good Deal!")
             st.balloons()
@@ -56,7 +59,7 @@ def show_predict_page(df):
         display_df = pd.DataFrame({'Product Name': output_df['name'], 
                                     'Price': output_df['prices_amountmin'], 
                                     'Merchant': output_df['prices_merchant'], 
-                                    'Product Condition': output_df['prices_condition'],
+                                    'Condition': output_df['prices_condition'],
                                     'On Sale': output_df['prices_issale']})
         st.write(display_df.style.format({"Price": "{:.2f}"}))
     
