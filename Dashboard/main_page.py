@@ -72,10 +72,10 @@ def show_predicted_page(df, item_name, item_price, retailer, condition, submitte
             output_df = df.loc[df["name"] == item_name]
             labels = list(output_df['prices_merchant'].unique())
             data = list(output_df.groupby(['prices_merchant']).count()['id'])
-            fig, ax = plt.subplots(figsize=(2,1))
-            ax.pie(data, labels=labels, autopct='%1.0f%%', shadow=True, startangle=180, 
-                    textprops={'color':'w', 'fontsize': 6})
-            ax.set_position([0,0,1,1])
+            fig, ax = plt.subplots(figsize=(5,5))
+            wedges, texts, autotexts = ax.pie(data, labels=labels, autopct='%1.0f%%', shadow=True, startangle=180, 
+                    textprops={'color':'lightgrey', 'fontsize': 14, 'weight': 'bold'})
+            ax.set_position([0,3,1,1])
             fig.patch.set_facecolor('none')
             st.pyplot(fig)
 
