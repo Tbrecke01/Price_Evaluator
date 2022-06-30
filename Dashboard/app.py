@@ -1,6 +1,5 @@
-# dependencies
+# Dependencies
 import pandas as pd
-import joblib
 import json
 import requests
 import streamlit as st
@@ -8,15 +7,25 @@ from main_page import show_predict_page
 from graph_page import show_table_page
 from streamlit_option_menu import option_menu
 from streamlit_lottie import st_lottie
+from config import password
+from sqlalchemy import create_engine
 
 st.set_page_config(layout ="wide")
 
+# Connect to RDS Database to query price_data table and store as pandas dataframe
+url = f"postgresql://postgres:{password}@final-project.crnuve3iih8x.us-east-1.rds.amazonaws.com:5432/postgres"
+engine = create_engine(url)
+connect = engine.connect()
+query = "SELECT * FROM price_data"
+df = pd.read_sql(query, con=connect)
+df.to_csv('cleaned.csv')
+
+# Adding animated graphic
 def load_lottieurl(url: str):
     r = requests.get(url)
     if r.status_code != 200:
         return None
     return r.json()
-
 lottie_hello = load_lottieurl("https://assets6.lottiefiles.com/packages/lf20_w5hernhv.json")
 st_lottie(
     lottie_hello, 
@@ -27,7 +36,7 @@ st_lottie(
     width = 200
 )
 
-
+# Option menu (Predictions and Visualizations tabs)
 selected = option_menu(menu_title = "Options",
  options = ["Predictions", "Visualizations"], 
  menu_icon = "menu-button-fill",
@@ -35,8 +44,8 @@ selected = option_menu(menu_title = "Options",
  default_index = 0, 
  orientation = "horizontal")
 
-
+# Show selected tab from option menu
 if selected == "Predictions":
-    show_predict_page()
+    show_predict_page(df)
 else:
     show_table_page()
