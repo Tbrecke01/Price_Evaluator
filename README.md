@@ -37,9 +37,12 @@ We used Streamlit.io to create our web application, which prompts users for a pr
 ## Visualizations Dashboard
 Using Tableau, we also built static visualizations capturing the full dataset. A stacked bar chart shows____. Bubble chart ____. ____
 
-# Technology usage for our final project
+## Technology usage for our final project
 •	Data Cleaning: Pandas, Numpy, and re
 •	Database: PostgreSQL RDS hosted on AWS
 •	Machine Learning: Sklearn library
 •	Code Editors: Jupyter Notebook / Google Colab / VScode
 •	Dashboard: Streamlit, Matplotlib, Tableau, HTML, CSS , Bootstrap.
+
+
+# Next Steps
