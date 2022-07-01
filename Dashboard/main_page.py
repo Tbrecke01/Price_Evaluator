@@ -1,16 +1,14 @@
 # Dependencies
 import pandas as pd
 import streamlit as st
-import numpy as np
-from sqlalchemy import create_engine
-import psycopg2
-from config import password
+import altair as alt
+import matplotlib.pyplot as plt
 import time
 from ML_Evaluator import evaluate_price
-import altair as alt
+
 
 # Function to generate predictions page
-def show_predict_page(df):
+def show_prediction_page(df):
     st.title("Price Evaluator")
 
     # Dropdown menu options
@@ -31,11 +29,14 @@ def show_predict_page(df):
         with box3:
             retailer = st.selectbox("Select a Retailer", merchants)
         with box4:
-            p_condition = st.selectbox("Product Condition", product_conditions)
+            condition = st.selectbox("Product Condition", product_conditions)
 
         # Submit button for Input Form
         submitted = st.form_submit_button('Submit')
     
+    return item_name, item_price, retailer, condition, submitted
+
+def show_predicted_page(df, item_name, item_price, retailer, condition, submitted):
     # Runs Machine Learning Model each time input form is 'submitted' by user
     if submitted:     
         # Adds spinner after clicking the button
@@ -46,7 +47,7 @@ def show_predict_page(df):
         product_id = df['id'].loc[df['name'] == item_name].iloc[0]
         
         # Use ML_Evaluator to make a prediction based on user input
-        eval = evaluate_price(product_id, item_price, p_condition, retailer)
+        eval = evaluate_price(product_id, item_price, condition, retailer)
         if eval == True:
             st.success("Seems like a Good Deal!")
             st.balloons()
@@ -58,31 +59,39 @@ def show_predict_page(df):
         display_df = pd.DataFrame({'Product Name': output_df['name'], 
                                     'Price': output_df['prices_amountmin'], 
                                     'Merchant': output_df['prices_merchant'], 
-                                    'Product Condition': output_df['prices_condition'],
+                                    'Condition': output_df['prices_condition'],
                                     'On Sale': output_df['prices_issale']})
         st.write(display_df.style.format({"Price": "{:.2f}"}))
     
-    # Generate columns of equal width for interactive visualizations
-    g1, g2 = st.columns((5,5))
+        # Generate columns of equal width for interactive visualizations
+        g1, g2 = st.columns((5,5))
 
-    # Graph 1 - Price History
-    with g1:
-        output_df = df.loc[df["name"] == item_name]
-        chart_data = pd.DataFrame({'Date': output_df['prices_dateseen'], 
-                                    'Price': output_df['prices_amountmin'],
-                                    'Merchant': output_df['prices_merchant']})
-        st.write("### Price History")
-        st.altair_chart(alt.Chart(chart_data).mark_line().encode(x='Date',
-                                                        y='Price',
-                                                        color='Merchant'))
+        # Graph 1 - Retailer Distribution
+        with g1:
+            st.write("### Retailer Distribution")
+            output_df = df.loc[df["name"] == item_name]
+            labels = list(output_df['prices_merchant'].unique())
+            data = list(output_df.groupby(['prices_merchant']).count()['id'])
+            fig, ax = plt.subplots(figsize=(5,5))
+            wedges, texts, autotexts = ax.pie(data, labels=labels, autopct='%1.0f%%', shadow=True, startangle=180, 
+                    textprops={'color':'lightgrey', 'fontsize': 14, 'weight': 'bold'})
+            ax.set_position([0,3,1,1])
+            fig.patch.set_facecolor('none')
+            st.pyplot(fig)
 
-    # Graph 2 - Bar Chart
-    with g2:
-        st.write("### Bar Chart ")
-        chart_data = pd.DataFrame(
-        df["prices_amountmax"],
-        df["prices_amountmin"])
-        st.bar_chart(chart_data)
+        # Graph 2 - Price History
+        with g2:
+            st.write("### Price History")
+            output_df = df.loc[df["name"] == item_name]
+            chart_data = pd.DataFrame({'Date': output_df['prices_dateseen'], 
+                                        'Price': output_df['prices_amountmin'],
+                                        'Condition': output_df['prices_condition']})
+            st.altair_chart(alt.Chart(chart_data).mark_line().encode(x='Date',
+                                                            y='Price',
+                                                            color='Condition'),
+                            use_container_width=True)
+
+
 
 
 

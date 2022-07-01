@@ -1,22 +1,22 @@
 # Dependencies
 import pandas as pd
-import json
 import requests
 import streamlit as st
-from main_page import show_predict_page
+from sqlalchemy import create_engine
+from main_page import show_prediction_page, show_predicted_page
 from graph_page import show_table_page
 from streamlit_option_menu import option_menu
 from streamlit_lottie import st_lottie
-from config import password
-from sqlalchemy import create_engine
 
 st.set_page_config(layout ="wide")
 
 # Connect to RDS Database to query price_data table and store as pandas dataframe
+from config import password
+# password = st.secrets['db_pw']
 url = f"postgresql://postgres:{password}@final-project.crnuve3iih8x.us-east-1.rds.amazonaws.com:5432/postgres"
 engine = create_engine(url)
 connect = engine.connect()
-query = "SELECT * FROM price_data"
+query = "SELECT id, name, prices_amountmax, prices_amountmin, prices_dateseen, prices_issale, prices_merchant, prices_condition FROM price_data"
 df = pd.read_sql(query, con=connect)
 df.to_csv('cleaned.csv')
 
@@ -38,7 +38,7 @@ st_lottie(
 
 # Option menu (Predictions and Visualizations tabs)
 selected = option_menu(menu_title = "Options",
- options = ["Predictions", "Visualizations"], 
+ options = ["Predictions", "Tableau Dashboard"], 
  menu_icon = "menu-button-fill",
  icons = ["activity", "bar-chart-fill"], 
  default_index = 0, 
@@ -46,6 +46,8 @@ selected = option_menu(menu_title = "Options",
 
 # Show selected tab from option menu
 if selected == "Predictions":
-    show_predict_page(df)
+    item_name, item_price, retailer, condition, submitted = show_prediction_page(df)
+    if submitted:
+        show_predicted_page(df, item_name, item_price, retailer, condition, submitted)
 else:
     show_table_page()
