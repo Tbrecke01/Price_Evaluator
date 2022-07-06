@@ -36,9 +36,25 @@ In order to clean the data, we had to perform several steps
 
 
 ## Machine Learning
-For the machine learning model, we tested a number of Machine Learning Models but found that the RandomForestClassifier resulted in the highest accuracy score. Using the cleaned dataset stored in our RDS, we trained our model to predict whether prices seen online are "discounted / sale" prices or "standard / retail" prices. 
+### Feature Selection & Target:
+The following Features were selected for our Machine Learning model:
+1. `id` - The identifier for each unique product.
+2. `prices_amountmin` - The lowest price observed for a product on the date specified.
+3. `prices_condition` - The 'condition' of a product (i.e. 'New' or 'Used').
+4. `prices_merchant` - The merchant selling the product (i.e. 'Walmart.com', 'Bestbuy.com', etc).
 
-Additionally, we observed that our pricing data had a class imbalance with discounted prices being less common than standard prices (as expected) and therefore we utilized RandomOverSampling in our training population in order to achieve a more balanced training set.
+Our Target variable is the `prices_issale` field, which indicates whether each data point represents a 'discounted' or 'on-sale' price point.
+
+Note: We initially included the `prices_dateseen` (the date on which the `prices_amountmin` was observed) as a feature in our machine learning model (also experimenting with only keeping the `quarter` or `month` as the feature). However, we eventually realized that this created some over-fitting as our dataset is broken out to thousands of products, while each unique product `id` is only observed, on average, approximately 10-15 times. Once we removed the date features from our model, our accuracy increased by ~5%.
+
+### Data Preprocessing:
+We used the `sklearn` library's `LabelEncoder` and `StandardScaler` to preprocess our selected feature and target variables. Additionally, because of the class imbalance observed in our pricing data (discounted prices were far less common than standard prices), we utilized `imblearn.over_sampling.RandomOverSampling` to create an equal distribution in our training data set. We also used the `joblib` library to save our encoders and scalers for future use in our Price Evaluator App.
+
+### Model Selection:
+Using our preprocessed dataset, we used a `for` loop to test a number of machine learning models from the `sklearn` library:
+!['ML_Models'](Resources/ml_models_tested.jpg)
+
+Based on these results, we found that the `RandomForestClassifier` provided the highest model accuracy score (`model.score()`). We then used the `joblib` library again to save the trained model for future use in our Price Evaluator App.
 
 ## Price Evaluator App
 We used Streamlit.io to create our web application, which prompts users for a product name, price, merchant, and condition ('New' or 'Used'). Our app then feeds the user's input into our saved Machine Learning Model, and predicts whether the sale conditions are discounted.
@@ -60,6 +76,3 @@ Using Tableau, we also built static visualizations capturing the full dataset.
 •	Machine Learning: Sklearn library
 •	Code Editors: Jupyter Notebook / Google Colab / VScode
 •	Dashboard: Streamlit, Lottie, Matplotlib, Tableau, HTML
-
-
-# Next Steps
