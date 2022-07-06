@@ -52,6 +52,7 @@ We used the `sklearn` library's `LabelEncoder` and `StandardScaler` to preproces
 
 ### Model Selection:
 Using our preprocessed dataset, we used a `for` loop to test a number of machine learning models from the `sklearn` library:
+
 !['ML_Models'](Resources/ml_models_tested.jpg)
 
 Based on these results, we found that the `RandomForestClassifier` provided the highest model accuracy score (`model.score()`). We then used the `joblib` library again to save the trained model for future use in our Price Evaluator App.
@@ -65,8 +66,8 @@ Using Tableau, we also built static visualizations capturing the full dataset.
 - Bubble chart shows the distribution of brands in our data set, using a count of the unique values int he ID column. Sony and Apple are pretty big players!
 - Box and Whiskers: We used this to look at how skewed the pricing data is. In order to evaluate this we chose the top 10 items with the most pricing data associated with them. We can see that Walmart and Bestbuy's average price is quite a bit lower than the other merchants'. BestBuy and Walmart also have the largest spread of pricing within their own data sets, while Amazon remains fairly tight around its average cost line. For this plot, outliers were thrown out; we are only interested in the skew and shape of normally distributed data. This has a pronounced affect on the look and usability of our graphs, demonstrated below with outliers (right) and without (left)
 
-![Here it is without outliers:](without_outliers.jpg)
-![Here it is with outliers:](with_outliers.jpg)
+![Here it is without outliers:](Resources/without_outliers.jpg)
+![Here it is with outliers:](Resources/with_outliers.jpg)
 
 
 
