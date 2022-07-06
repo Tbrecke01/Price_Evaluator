@@ -66,8 +66,8 @@ Using Tableau, we also built static visualizations capturing the full dataset.
 - Bubble chart shows the distribution of brands in our data set, using a count of the unique values int he ID column. Sony and Apple are pretty big players!
 - Box and Whiskers: We used this to look at how skewed the pricing data is. In order to evaluate this we chose the top 10 items with the most pricing data associated with them. We can see that Walmart and Bestbuy's average price is quite a bit lower than the other merchants'. BestBuy and Walmart also have the largest spread of pricing within their own data sets, while Amazon remains fairly tight around its average cost line. For this plot, outliers were thrown out; we are only interested in the skew and shape of normally distributed data. This has a pronounced affect on the look and usability of our graphs, demonstrated below with outliers (right) and without (left)
 
-![Here it is without outliers:](Resources/without_outliers.jpg)
-![Here it is with outliers:](Resources/with_outliers.jpg)
+![Here it is without outliers:](Resources/boxplot.jpg)
+![Here it is with outliers:](Resources/boxplot_outliers.jpg)
 
 
 
