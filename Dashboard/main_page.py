@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import time
 from ML_Evaluator import evaluate_price
 
-
 # Function to generate predictions page
 def show_prediction_page(df):
     st.title("Price Evaluator")
@@ -92,8 +91,3 @@ def show_predicted_page(df, item_name, item_price, retailer, condition, submitte
                             use_container_width=True)
 
 
-
-
-
-
-    
