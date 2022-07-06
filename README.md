@@ -17,10 +17,32 @@ There’s always a lot of ‘head knowledge’ of the best times to buy a certai
 - All team members have each others email and phone number for contact purposes as well in case of issues
 - Individual member updates will be stored in their corresponding Git branch (named for each member). Review by two memebers is needed to push an update to main.
 
-## Machine Learning Model
-For the machine learning model, we chose the RandomForestClassifier to help predict whether prices seen online are "discounted / sale" prices or "standard / retail" prices. In order to train the model, we obtained [Electronic Products and Pricing Data](https://www.kaggle.com/datasets/datafiniti/electronic-products-prices?resource=download) from [kaggle.com](kaggle.com) which includes minimum selling prices (`prices_amountMin`) observed from various online merchants (`prices_merchant`) as well as the dates that those prices were observed (`prices_dateSeen`), and whether the prices observed were "sale" prices (`prices_isSale`) for each individual product id (`id`). 
+## Data - Extract, Transform & Load
+We obtained [Electronic Products and Pricing Data](https://www.kaggle.com/datasets/datafiniti/electronic-products-prices?resource=download) from [kaggle.com](kaggle.com) which includes minimum selling prices (`prices_amountmin`) observed from various online merchants (`prices_merchant`) as well as the dates that those prices were observed (`prices_dateseen`), and whether the prices observed were "sale" prices (`prices_issale`) for each individual product id (`id`). 
 
-In order to use the `pricing_merchant` data, we needed to clean the data using RegEx strings to match different variations of merchant names. Afterwards, in order to reduce the number of unique merchants, we only kept Bestbuy, Walmart and Amazon, and placed all other merchants into an 'Others' bucket. 
+In order to clean the data, we ______
+
+Initially, the `pricing_merchant` data contained merchant names with various naming conventions and included over ____ unique names. Using RegEx strings to match different variations of merchant names, we cut the unique names down to ___ and grouped all merchants with fewer than ___ unique data points into an 'Others' category.
+
+Finally, using the `create_engine` function from `sqlalchemy`, we established a connection and saved our clean data to our PostgreSQL RDS (hosted on AWS). 
+
+## Machine Learning
+For the machine learning model, we tested a number of Machine Learning Models but found that the RandomForestClassifier resulted in the highest accuracy score. Using the cleaned dataset stored in our RDS, we trained our model to predict whether prices seen online are "discounted / sale" prices or "standard / retail" prices. 
 
 Additionally, we observed that our pricing data had a class imbalance with discounted prices being less common than standard prices (as expected) and therefore we utilized RandomOverSampling in our training population in order to achieve a more balanced training set.
 
+## Price Evaluator App
+We used Streamlit.io to create our web application, which prompts users for a product name, price, merchant, and condition ('New' or 'Used'). Our app then feeds the user's input into our saved Machine Learning Model, and predicts whether the sale conditions are discounted.
+
+## Visualizations Dashboard
+Using Tableau, we also built static visualizations capturing the full dataset. A stacked bar chart shows____. Bubble chart ____. ____
+
+## Technology usage for our final project
+•	Data Cleaning: Pandas, Numpy, and re
+•	Database: PostgreSQL RDS hosted on AWS
+•	Machine Learning: Sklearn library
+•	Code Editors: Jupyter Notebook / Google Colab / VScode
+•	Dashboard: Streamlit, Matplotlib, Tableau, HTML, CSS , Bootstrap.
+
+
+# Next Steps
