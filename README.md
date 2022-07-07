@@ -1,14 +1,15 @@
-# The “When to Buy” App
+# The Prive Evaluator App
 ## Description 
-Train a Machine Learning Model to be able to recognize whether a product’s pricing is discounted based on the date, merchant info and product id.
-## Reason Selected
+An app hosted on a streamlit website that, given sufficient retailer data, is able to take a product and price given to it by a user and determine whether or not that is a good price to buy at. If not, the app will give a list of similair products at different retailers with better times and prices to buy.
+## Reason to Use
 There’s always a lot of ‘head knowledge’ of the best times to buy a certain item (ie always Black Friday) or from where to buy it (according to my dad Best Buy is always the best) but there’s a lack of actual hard evidence for this. We wanted to get rid of the prophesizing and create a model to predict whether you’re getting a good deal on something, or whether you should wait a couple more weeks for a sale.
-## Questions we Hope to Answer:
-- If I buy ‘item X’ today, am I getting a good deal on it?
-- What are the pricing trends for item X? Per retailer?
-- What retailer should I buy item X from?
-- Is one retailer generally better than the others?
-- Are the best deals always on holidays?
+## How to Use
+<insert image of the selection table>
+The application itself is incredibly simple to use. A user simply needs to begin typing the product they are interested in purchasing into the search box and select it from the dropdown menu. After that, enter the price you found the item at into the adjacent 'price' box and select whether or not you would like a new or used item. A text field will then appear either telling you to 'Buy' in green letters for a good deal, or in red letters tell you to think before you buy as there may be better options. To give you an idea of these options, the table below the search fields will automatically generate with the same product from different retailers and the price those retailers are selling it for. This way you can know you are getting your new iPhone at a competitive price, and not simply what Apple.com is telling you they believe it should be!
+  <insert generated table>
+Finally the website also includes several tables that are generated below the interactive table and in the 'data visualization' tab. Below the interactive table, these graphs are designed to show you who the biggest retailers are for your product as well as the products price over time. This is to allow you to pick both the most reputable retailers with highest supply and to tailor your shopping decisions for when the item is cheapest. The 'data visualization' section has several graphics generated within Tableau that are static, but again feature the biggest brands, retailers, and average price per retailer. This is again to help inform users the most reputable and cheapest purchase options as well as the representation of certain brands within the dataset.
+    
+For the dataset, it is currently populated with over 12k entries from an Electronics Product dataset found on Kaggle (more details below). You are free to use the code provided here and substitute your own dataset, but it will need to be cleaned and columns matched to our naming schema or the code edited to reflect your desires.
 
 ## Communication Methods
 - We will meet every Tuesday/Thursday starting at 6:00 to review changes and to go over large problems.
