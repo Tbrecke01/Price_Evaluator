@@ -43,7 +43,4 @@ Using Tableau, we also built static visualizations capturing the full dataset. A
 •	Database: PostgreSQL RDS hosted on AWS
 •	Machine Learning: Sklearn library
 •	Code Editors: Jupyter Notebook / Google Colab / VScode
-•	Dashboard: Streamlit, Matplotlib, Tableau, HTML, CSS , Bootstrap.
-
-
-# Next Steps
+•	Dashboard: Streamlit, Matplotlib, Tableau, HTML, CSS, Bootstrap.
