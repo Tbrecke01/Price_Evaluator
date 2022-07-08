@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # The Price Evaluator App
+=======
+# The Prive Evaluator App
+>>>>>>> 78720698519ecf1a437e97f74e6cb6ed11b8575b
 ## Description 
 An app hosted on a streamlit website that, given sufficient retailer data, is able to take a product and price given to it by a user and determine whether or not that is a good price to buy at. If not, the app will give a list of similair products at different retailers with better times and prices to buy.
 ## Reason to Use
@@ -19,28 +23,79 @@ For the dataset, it is currently populated with over 12k entries from an Electro
 - Individual member updates will be stored in their corresponding Git branch (named for each member). Review by two memebers is needed to push an update to main.
 
 ## Data - Extract, Transform & Load
-We obtained [Electronic Products and Pricing Data](https://www.kaggle.com/datasets/datafiniti/electronic-products-prices?resource=download) from [kaggle.com](kaggle.com) which includes minimum selling prices (`prices_amountmin`) observed from various online merchants (`prices_merchant`) as well as the dates that those prices were observed (`prices_dateseen`), and whether the prices observed were "sale" prices (`prices_issale`) for each individual product id (`id`). 
+Extract: 
+- We obtained [Electronic Products and Pricing Data](https://www.kaggle.com/datasets/datafiniti/electronic-products-prices?resource=download) from [kaggle.com](kaggle.com) which includes minimum selling prices (`prices_amountmin`) observed from various online merchants (`prices_merchant`) as well as the dates that those prices were observed (`prices_dateseen`), and whether the prices observed were "sale" prices (`prices_issale`) for each individual product id (`id`). 
 
-In order to clean the data, we ______
+In order to clean the data, we had to perform several steps
+- Transform the data:
+    1. Replace all periods in titles with underscores to follow best SQL practices
+    2. Updating all date columns to be in the correct datetime format
+    3. Deciding which date columns to use; it was determined that the most recent datetime in the "date seen" column was the most relevant data given what our website's overall goal is. To extract these dates, we split this comma-separated column into individual columns and dropped all but the most recent column. 
+    4. Using only USD for our pricing data; all other currencies were dropped
+    5. Updating the prices_condition column to read as just one of two values, and cleaned the data so that all values were either New or Used. We assumed that all blank cells were New.
+    6. Recombine the prices_merchant column so that we have five categories: walmart, bestbuy, amazon, bhpvideo, and "other". This column initially was a mess, and included mispellings, odd naming conventions, and a host of other issues, which resulted in over 1,500 unique names. We used regex strings to sort the data into the five categories mentioned, with no dramatic loss of data. Data that contained less than 300 data points was lumped together into an "other" category. 
 
-Initially, the `pricing_merchant` data contained merchant names with various naming conventions and included over ____ unique names. Using RegEx strings to match different variations of merchant names, we cut the unique names down to ___ and grouped all merchants with fewer than ___ unique data points into an 'Others' category.
+    Load:
+    - We decided to use Amazon AWS linked through PGAdmin for our database. PGAdmin allows us to run administrative actions on the database, while AWS hosts the database live. For our schema, we had PGAdmin assign a unique number to each row of data to act as our primay key, since there were no native unique values in the data set. In order to ensure that everyone always had an updated version of hte database (data cleaning was an ongoing process!), we connected the database to our Jupyter notebook files directly by creating an engine using sqalqchemy; this way, whenever a change was made we could all pull the same database into our systems as needed. The password to the database was entered in a separate line of code for security. 
 
-Finally, using the `create_engine` function from `sqlalchemy`, we established a connection and saved our clean data to our PostgreSQL RDS (hosted on AWS). 
+
 
 ## Machine Learning
-For the machine learning model, we tested a number of Machine Learning Models but found that the RandomForestClassifier resulted in the highest accuracy score. Using the cleaned dataset stored in our RDS, we trained our model to predict whether prices seen online are "discounted / sale" prices or "standard / retail" prices. 
+### Feature Selection & Target:
+The following Features were selected for our Machine Learning model:
+1. `id` - The identifier for each unique product.
+2. `prices_amountmin` - The lowest price observed for a product on the date specified.
+3. `prices_condition` - The 'condition' of a product (i.e. 'New' or 'Used').
+4. `prices_merchant` - The merchant selling the product (i.e. 'Walmart.com', 'Bestbuy.com', etc).
 
-Additionally, we observed that our pricing data had a class imbalance with discounted prices being less common than standard prices (as expected) and therefore we utilized RandomOverSampling in our training population in order to achieve a more balanced training set.
+Our Target variable is the `prices_issale` field, which indicates whether each data point represents a 'discounted' or 'on-sale' price point.
+
+Note: We initially included the `prices_dateseen` (the date on which the `prices_amountmin` was observed) as a feature in our machine learning model (also experimenting with only keeping the `quarter` or `month` as the feature). However, we eventually realized that this created some over-fitting as our dataset is broken out to thousands of products, while each unique product `id` is only observed, on average, approximately 10-15 times. Once we removed the date features from our model, our accuracy increased by ~5%.
+
+### Data Preprocessing:
+We used the `sklearn` library's `LabelEncoder` and `StandardScaler` to preprocess our selected feature and target variables. Additionally, because of the class imbalance observed in our pricing data (discounted prices were far less common than standard prices), we utilized `imblearn.over_sampling.RandomOverSampling` to create an equal distribution in our training data set. We also used the `joblib` library to save our encoders and scalers for future use in our Price Evaluator App.
+
+### Model Selection:
+Using our preprocessed dataset, we used a `for` loop to test a number of machine learning models from the `sklearn` library:
+
+!['ML_Models'](Resources/ml_models_tested.jpg)
+
+Based on these results, we found that the `RandomForestClassifier` provided the highest model accuracy score (`model.score()`). We then used the `joblib` library again to save the trained model for future use in our Price Evaluator App.
 
 ## Price Evaluator App
 We used Streamlit.io to create our web application, which prompts users for a product name, price, merchant, and condition ('New' or 'Used'). Our app then feeds the user's input into our saved Machine Learning Model, and predicts whether the sale conditions are discounted.
+We have 3 pages in our web application:
+- Graph page which represents our Tableau Dashboard.
+- Prediction page which allows the user to select the product to be predicted, and contains our input and selec boxes.
+- Predicted page which appears after submitting the submit button and contains our interactive graphs and predicted results.<br>
+
+our web application is connected with our AWS database using sqlalchemy create_engine feature, using option_menu feature in streamlit we created multiple pages, lottie is used for animated graphic.<br>
+st.spinner is used to add a spinner, after submitting the submit button the spinner is going to load for a second and then our predicted page will show up, if predicted price is lower then user input price, a green success messages (Seems like a Good Deal!) and balloons will pop up on our screen, which is created using st.success and st.balloons.
+
+We have two interactive charts:
+1) Pie chart which shows Retailer Distribution.
+2) Altair chart which shows Price History.
+> <img width="1440" alt="interactive charts" src="https://user-images.githubusercontent.com/97934695/177893946-2a6fd88c-48c1-4993-9c44-f9bad3709794.png">
+
 
 ## Visualizations Dashboard
-Using Tableau, we also built static visualizations capturing the full dataset. A stacked bar chart shows____. Bubble chart ____. ____
+Using Tableau, we also built static visualizations capturing the full dataset. 
+- A stacked bar chart shows the distribution of sales over time; we can see that BestBuy has the most frequent sales in May, but almost none in January or Febrary.  
+- Bubble chart shows the distribution of brands in our data set, using a count of the unique values int he ID column. Sony and Apple are pretty big players!
+- Box and Whiskers: We used this to look at how skewed the pricing data is. In order to evaluate this we chose the top 10 items with the most pricing data associated with them. We can see that Walmart and Bestbuy's average price is quite a bit lower than the other merchants'. BestBuy and Walmart also have the largest spread of pricing within their own data sets, while Amazon remains fairly tight around its average cost line. For this plot, outliers were thrown out; we are only interested in the skew and shape of normally distributed data. This has a pronounced affect on the look and usability of our graphs, demonstrated below with outliers (right) and without (left)
 
-## Technology usage for our final project
+![Here it is without outliers:](Resources/boxplot.jpg)
+![Here it is with outliers:](Resources/boxplot_outliers.jpg)
+
+
+
+## Technology
 •	Data Cleaning: Pandas, Numpy, and re
 •	Database: PostgreSQL RDS hosted on AWS
 •	Machine Learning: Sklearn library
 •	Code Editors: Jupyter Notebook / Google Colab / VScode
+<<<<<<< HEAD
 •	Dashboard: Streamlit, Matplotlib, Tableau, HTML, CSS, Bootstrap.
+=======
+•	Dashboard: Streamlit, Lottie, Matplotlib, Tableau, HTML
+>>>>>>> 78720698519ecf1a437e97f74e6cb6ed11b8575b
