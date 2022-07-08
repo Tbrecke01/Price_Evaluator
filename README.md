@@ -67,6 +67,6 @@ On the Tableau Dashboard page, we use `streamlit.components.v1` in order to open
 ## Technology
 - Data Cleaning: Pandas, Numpy, and re
 - Database: PostgreSQL RDS hosted on AWS
-- Machine Learning: Sklearn library
+- Machine Learning: Sklearn, Imblearn and Joblib
 - Code Editors: Jupyter Notebook / Google Colab / VScode
 - Dashboard: Streamlit, Lottie, Matplotlib, Tableau, HTML
