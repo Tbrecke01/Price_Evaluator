@@ -1,4 +1,4 @@
-# The Prive Evaluator App
+# The Price Evaluator App
 ## Description 
 An app hosted on a streamlit website that, given sufficient retailer data, is able to take a product and price given to it by a user and determine whether or not that is a good price to buy at. If not, the app will give a list of similair products at different retailers with better times and prices to buy.
 ## Reason to Use
