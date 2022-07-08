@@ -2,7 +2,7 @@
 import pandas as pd
 import joblib
 
-
+# Function to make predictions based on User input
 def evaluate_price(product_id, price, condition, merchant):
     # read in user input from website -- TEST/HYPOTHETICAL INPUT FOR NOW
     user_input = pd.DataFrame({'id': product_id,
