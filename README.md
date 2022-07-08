@@ -33,6 +33,19 @@ Additionally, we observed that our pricing data had a class imbalance with disco
 
 ## Price Evaluator App
 We used Streamlit.io to create our web application, which prompts users for a product name, price, merchant, and condition ('New' or 'Used'). Our app then feeds the user's input into our saved Machine Learning Model, and predicts whether the sale conditions are discounted.
+We have 3 pages in our web application:
+- Graph page which represents our Tableau Dashboard.
+- Prediction page which allows the user to select the product to be predicted, and contains our input and selec boxes.
+- Predicted page which appears after submitting the submit button and contains our interactive graphs and predicted results.<br>
+
+our web application is connected with our AWS database using sqlalchemy create_engine feature, using option_menu feature in streamlit we created multiple pages, lottie is used for animated graphic.<br>
+st.spinner is used to add a spinner, after submitting the submit button the spinner is going to load for a second and then our predicted page will show up, if predicted price is lower then user input price, a green success messages (Seems like a Good Deal!) and balloons will pop up on our screen, which is created using st.success and st.balloons.
+
+We have two interactive charts:
+1) Pie chart which shows Retailer Distribution.
+2) Altair chart which shows Price History.
+> <img width="1440" alt="interactive charts" src="https://user-images.githubusercontent.com/97934695/177893946-2a6fd88c-48c1-4993-9c44-f9bad3709794.png">
+
 
 ## Visualizations Dashboard
 Using Tableau, we also built static visualizations capturing the full dataset. A stacked bar chart shows____. Bubble chart ____. ____
