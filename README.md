@@ -2,7 +2,7 @@
 ### A Streamlit app that not only predicts whether you're getting a discounted price, but also gives a list of deals offered at other top retailers.
 There is always a lot of "head knowledge" regarding the best times to buy a certain item (i.e. always wait till Black Friday) or from where to buy it (according to my dad Best Buy is always the best) but there’s rarely any hard evidence to back these claims. The Price Evaluator app uses a machine learning model to predict whether you’re getting a good deal on something, or whether you should shop around some more or wait for a sale.
 
-['Click here to visit our site']()
+Visit our App here: _____(insert link)_________
 
 ## The Prediction Page
 ![Prediction_Page](Resources/prediction_page.jpg)
@@ -55,7 +55,7 @@ Using our preprocessed dataset, we used a `for` loop to test a number of machine
 
 Based on these results, we found that the `RandomForestClassifier` provided the highest model accuracy score (`model.score()`). We then used the `joblib` library again to save the trained model for future use in our Price Evaluator App.
 
-## Price Evaluator App
+## Streamlit Application
 We used Streamlit.io to create and deploy our web application. At the top of our app, we use a `streamlit_option_menu` to allow users to navigate between the 'Predictions' page (default) vs the 'Tableau Dashboard' page. 
 
 On the Prediction page, we use Streamlit's built in `st.form` function to generate a user form which prompts the user for a product name, price, merchant, and condition ('New' or 'Used') and saves them as variables upon the user clicking the "Submit" button. Our app then imports `ML_Evaluator.py` which has a function reads the input variables, loads our Machine Learning model (including data encoders and scaler), and predicts whether the sale conditions are discounted. Based on the output of this function, we use Streamlit's built in `st.success` and `st.warning` functions to generate either a green 'success' box, indicating that the input 'Seems like a Good Deal!' or a yellow 'warning' box, indicating that the input 'May not be Discounted' (we also added `st.balloons` when deals were predicted to be discounted.) 
