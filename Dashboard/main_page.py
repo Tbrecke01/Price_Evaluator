@@ -72,7 +72,6 @@ def show_predicted_page(df, item_name, item_price, retailer, condition, submitte
             output_df = df.loc[df["name"] == item_name]
             data = output_df.groupby(['prices_merchant']).count()['id']
             labels = data.index
-            # labels = output_df['prices_merchant'].unique()
             fig, ax = plt.subplots(figsize=(4,4))
             ax.pie(data, labels=labels, autopct='%1.0f%%', shadow=True, startangle=180, 
                     textprops={'color':'lightgrey', 'fontsize': 14, 'weight': 'bold'})
