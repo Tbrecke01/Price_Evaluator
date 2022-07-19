@@ -72,3 +72,6 @@ On the Tableau Dashboard page, we use `streamlit.components.v1` in order to open
 - Machine Learning: Sklearn, Imblearn and Joblib
 - Code Editors: Jupyter Notebook / Google Colab / VScode
 - Dashboard: Streamlit, Lottie, Matplotlib, Altair, Tableau, HTML
+
+## Presentation
+Check out our Price Evaluator Showcase [HERE](https://docs.google.com/presentation/d/1xlMktD-GfSJUkt3RO2w5vrKbAJ0wzticDb8hsSFrX6U/edit#slide=id.p1)!
